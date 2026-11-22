@@ -1,39 +1,40 @@
-# TechProducts Inventory API
+# TecnoMundo E-commerce System
 
-A RESTful API and product management application developed with **Java, Spring Boot, Spring Data JPA, and MySQL**.
+TecnoMundo is a collaborative academic e-commerce system with a customer storefront, a REST API, a product administration module, and a shared MySQL database.
 
-This project was developed as part of a university e-commerce system. It provides an independent backend service and web-based administration interface for managing technology products.
+The project brings together two independent Java applications: a Java EE storefront for customers and a Spring Boot application for product management.
 
-## Overview
+## Components
 
-TechProducts Inventory API allows users to create, retrieve, update, delete, and search products through REST endpoints.
-
-The application also includes a product administration interface built with Thymeleaf.
-
-It was designed to integrate with **TecnoMundo**, an existing e-commerce application developed using Java EE, JSP, and Servlets.
-
-Both applications share a MySQL database, allowing changes made through the administration module to be reflected in the TecnoMundo product catalog.
-
-## Technologies
-
-- Java 17
-- Spring Boot 3.4.0
-- Spring Web
-- Spring Data JPA
-- Hibernate
-- MySQL
-- Thymeleaf
-- Maven
-- REST API
+| Directory | Component | Technologies | Purpose |
+| --- | --- | --- | --- |
+| `tecnomundo-web/` | Customer storefront | Java EE, JSP, Servlets, JDBC | Product catalog, customer registration and login, shopping cart, order placement, and order history. |
+| `techproducts-api/` | Product API and administration module | Spring Boot, REST API, Spring Data JPA, Hibernate, Thymeleaf | Product management through REST endpoints and a web-based administration interface. |
+| `database/` | Shared database schema | MySQL | SQL script to create the database, tables, indexes, and relationships used by both applications. |
 
 ## Features
 
-- RESTful API for product management.
+### Customer Storefront
+
+- Browse the technology product catalog.
+- Register a customer account, sign in, and sign out.
+- Add products to the shopping cart and remove them.
+- Place orders and view order history and details.
+
+### Product API and Administration
+
 - Create, retrieve, update, and delete products.
-- Search products by ID or name.
-- Web-based product administration interface.
-- Database persistence using Spring Data JPA.
-- Integration with an existing e-commerce application through MySQL.
+- Search products by ID or name through REST endpoints.
+- Manage products through a Thymeleaf administration interface.
+- Persist product information using Spring Data JPA and Hibernate.
+
+## Shared Database Integration
+
+Both applications connect to the same `bd_carrito` MySQL database. The storefront uses JDBC, while the product API and administration module use Spring Data JPA.
+
+Product changes made through the administration module are stored in the shared database and become visible when the storefront catalog is refreshed. The applications integrate through this shared schema.
+
+The SQL script in `database/bd_carrito.sql` contains the schema only. It includes no customer, product, or order records.
 
 ## REST API Endpoints
 
@@ -62,38 +63,35 @@ Example using cURL:
 curl http://localhost:8070/tecnologia/listar
 ```
 
-## Integration with TecnoMundo
-
-TechProducts and TecnoMundo are independent applications that connect to the same MySQL database.
-
-**TechProducts Inventory API**
-
-- Built with Spring Boot.
-- Provides REST endpoints and a product administration interface.
-- Uses Spring Data JPA and Hibernate for database persistence.
-
-**TecnoMundo**
-
-- Built with Java EE, JSP, and Servlets.
-- Provides the customer-facing e-commerce interface.
-- Uses JDBC to retrieve product information from MySQL.
-
-Product changes made through TechProducts are stored in the shared database and become visible in TecnoMundo when its catalog is refreshed.
-
-The integration uses a **shared database**, rather than direct API communication between the applications.
-
 ## Getting Started
 
 ### Prerequisites
 
-- Java 17 or later
+- Java 17 or later for the Spring Boot application
 - Maven
 - MySQL
-- An existing `bd_carrito` database with the required product table
+- A compatible Java EE servlet container for the storefront
 
-### Database Configuration
+### Clone the Repository
 
-The application supports environment variables for database configuration.
+```bash
+git clone https://github.com/DaTerrifier/TecnoMundo
+cd TecnoMundo
+```
+
+### Create the Database Schema
+
+Import the schema from the repository root:
+
+```bash
+mysql -u your_mysql_user -p < database/bd_carrito.sql
+```
+
+The script creates and selects `bd_carrito`, then creates its tables, indexes, and relationships. It does not populate the product catalog.
+
+### Configure the Product API
+
+The Spring Boot application supports environment variables for database configuration.
 
 | Variable | Description |
 | --- | --- |
@@ -111,27 +109,14 @@ export DB_PASSWORD="your_mysql_password"
 
 The database schema must already exist. Automatic Hibernate schema updates are disabled.
 
-### Installation
+### Run the Product API and Administration Module
 
-Clone the repository:
-
-```bash
-git clone https://github.com/DaTerrifier/techproducts-inventory-api.git
-```
-
-Navigate to the project directory:
+From the repository root, navigate to the Spring Boot application and start it:
 
 ```bash
-cd techproducts-inventory-api
-```
-
-Start the application:
-
-```bash
+cd techproducts-api
 mvn spring-boot:run
 ```
-
-### Access the Application
 
 Product administration interface:
 
@@ -141,28 +126,30 @@ REST API:
 
 `http://localhost:8070/tecnologia/listar`
 
+### Run the Storefront
+
+Deploy `tecnomundo-web/` as a Java EE web application to a compatible servlet container. Its JDBC connection in `tecnomundo-web/src/main/java/config/Conexion.java` must point to the same `bd_carrito` database with valid local connection settings.
+
+The storefront runs separately from the Spring Boot application; its URL depends on the servlet container and deployment context.
+
 ## Project Structure
 
-The application is organized into the following components:
+- `README.md`: Documentation for the complete TecnoMundo system.
+- `database/`: Shared MySQL schema.
+- `tecnomundo-web/`: Java EE customer storefront.
+- `techproducts-api/`: Spring Boot REST API and product administration module.
 
-- **REST Controller:** Handles HTTP requests and exposes product management endpoints.
-- **MVC Controller:** Manages the web-based administration interface.
-- **Entity:** Represents product information stored in MySQL.
-- **Repository/Service:** Provides database access and product management operations.
-- **Thymeleaf Templates:** Render the administration interface.
-- **Application Configuration:** Defines database connectivity and Spring Boot settings.
+Within `techproducts-api/`, REST controllers expose product endpoints, the MVC controller handles the administration interface, entities and the repository/service interface provide persistence, and Thymeleaf templates render product management pages.
 
-## Academic Context
+## Academic Context and My Contribution
 
-This application was developed as part of a collaborative university e-commerce project.
+TecnoMundo was developed collaboratively as a university e-commerce project. The customer storefront was a collaborative effort.
 
-My primary contribution was the development of the **Spring Boot REST API and product administration module**, including database persistence and integration with the existing TecnoMundo application.
-
-The TecnoMundo storefront was developed collaboratively.
+**My primary contribution was the development of the Spring Boot REST API and the product administration module**, including product management endpoints, the Thymeleaf interface, database persistence, and integration with the shared MySQL database.
 
 ## Future Improvements
 
-Potential improvements include:
+Potential improvements for the API and administration module include:
 
 - Authentication and role-based authorization.
 - Request validation.
@@ -172,6 +159,4 @@ Potential improvements include:
 
 ## Disclaimer
 
-This is an academic project intended to demonstrate backend development, RESTful services, database persistence, and integration between independent applications.
-
-It is not intended for production use without additional security, validation, and testing.
+This academic project demonstrates e-commerce workflows, backend development, RESTful services, database persistence, and integration between independent applications. It requires additional security, validation, and testing before production use.
