@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos Tecnología</title>
+</head>
+<body>
+    <h1>Lista de Productos</h1>
+    <a href="/nuevo">Agregar Producto</a>
+    <br><br>
+	<form action="/buscar" method="get">
+	        <label for="search">Buscar por nombre o ID:</label>
+	        <input type="text" id="search" name="search" placeholder="Ingrese el nombre o ID del producto" required>
+	        <button type="submit">Buscar</button>
+	    </form>
+	<br><br>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Imagen</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Recorremos la lista de productos -->
+            <tr th:each="producto : ${listado}">
+                <td th:text="${producto.idProd}"></td>
+                <td th:text="${producto.nombre}"></td>
+                <td th:text="${producto.precio}"></td>
+                <td>
+                    <!-- Mostrar la imagen desde static/productos -->
+    				<img th:src="@{/productos/{imagen}(imagen=${producto.imagen})}" alt="Imagen del Producto" style="width:100px;height:auto;">                </td>
+                <td>
+                    <a th:href="@{/editar/{id}(id=${producto.idProd})}">Editar</a>
+                    <a th:href="@{/eliminar/{id}(id=${producto.idProd})}">Eliminar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,62 @@
+# ==========================================
+# Maven / Build
+# ==========================================
+target/
+build/
+*.class
+
+# Maven Wrapper
+!.mvn/wrapper/maven-wrapper.jar
+
+# ==========================================
+# IDEs
+# ==========================================
+
+# Eclipse / Spring Tool Suite
+.apt_generated/
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# Visual Studio Code
+.vscode/
+
+# ==========================================
+# Environment / Secrets
+# ==========================================
+.env
+.env.*
+!.env.example
+
+application-local.properties
+application-dev.properties
+
+# ==========================================
+# Logs / Temporary Files
+# ==========================================
+*.log
+logs/
+*.tmp
+*.bak
+
+# ==========================================
+# macOS
+# ==========================================
+.DS_Store
+.AppleDouble
